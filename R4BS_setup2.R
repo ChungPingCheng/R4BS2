@@ -37,8 +37,8 @@ if(Sys.info()["sysname"]=="Darwin"){
 
 # set up options for formatting output
 knitr::opts_chunk$set(
-  tidy = FALSE,     # display code as typed
-  size = "small", # slightly smaller font for code
+  tidy = FALSE,     # 程式碼顯示就與輸入格式相同
+  size = "small",   # 程式碼用小一點的字
   fig.width = 7, 
   fig.asp = .7,
   fig.align = 'center',
