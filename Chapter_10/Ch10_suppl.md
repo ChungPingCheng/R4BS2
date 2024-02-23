@@ -1,5 +1,11 @@
 第十章: 潛在成長模型分析（附錄）
 ================
+2024 二月 23
+
+``` r
+#整體設定，含載入套件
+source("https://raw.githubusercontent.com/ChungPingCheng/R4BS2/main/R4BS_setup.R")
+```
 
 \#讀取與擷取資料
 
@@ -17,7 +23,7 @@ file_list <- list.files(folder_path, pattern = "W[1-5].csv", full.names = TRUE)
 # 記憶的各變項，5是拒答，9999是遺漏值
 extract_data_from_file <- function(file) { 
    data <- read.csv(file, header = TRUE, stringsAsFactors = FALSE) |> 
-           dplyr::select(coga01:cogc07, baby_id, pfa0202, relationship) |>
+           dplyr::select(coga01:coga10,cogc01:cogc07, baby_id, pfa0202, relationship) |>
            dplyr::mutate(score = across(coga01:cogc07, ~if_else(. > 4, NA_real_, .)) |>           
            rowSums(na.rm = FALSE)) |>
            dplyr::select(!(coga01:cogc07))
@@ -48,27 +54,27 @@ extracted_data_list |> glimpse()
       ..$ baby_id     : chr [1:6588] "N111001213" "C340101165" "N232001184" "N236801005" ...
       ..$ pfa0202     : int [1:6588] 2 4 2 2 2 5 5 4 3 2 ...
       ..$ relationship: int [1:6588] 3 3 2 3 2 3 2 3 2 3 ...
-      ..$ score       : num [1:6588] 29 23 27 25 27 29 32 25 23 24 ...
+      ..$ score       : num [1:6588] 23 19 21 19 21 23 26 19 17 19 ...
      $ :'data.frame':   6739 obs. of  4 variables:
       ..$ baby_id     : chr [1:6739] "C340001002" "C340001003" "C340001004" "C340001005" ...
       ..$ pfa0202     : int [1:6739] 5 5 4 5 5 5 4 5 5 3 ...
       ..$ relationship: int [1:6739] 3 2 3 3 3 3 2 3 3 2 ...
-      ..$ score       : num [1:6739] 36 22 34 31 37 31 34 31 34 30 ...
+      ..$ score       : num [1:6739] 30 18 28 25 31 25 28 26 28 25 ...
      $ :'data.frame':   6874 obs. of  4 variables:
       ..$ baby_id     : chr [1:6874] "C340001002" "C340001004" "C340001005" "C340001006" ...
       ..$ pfa0202     : int [1:6874] 5 4 5 2 9999 5 5 4 5 9999 ...
       ..$ relationship: int [1:6874] 3 3 3 3 3 3 3 2 3 3 ...
-      ..$ score       : num [1:6874] 57 58 50 54 57 58 50 53 55 51 ...
+      ..$ score       : num [1:6874] 46 47 40 43 46 46 40 42 46 41 ...
      $ :'data.frame':   6866 obs. of  4 variables:
       ..$ baby_id     : chr [1:6866] "C340001002" "C340001003" "C340001004" "C340001005" ...
       ..$ pfa0202     : int [1:6866] 5 5 4 5 9999 5 5 4 5 9999 ...
       ..$ relationship: int [1:6866] 3 2 3 3 3 3 3 2 3 3 ...
-      ..$ score       : num [1:6866] 64 42 61 60 62 61 59 57 57 58 ...
+      ..$ score       : num [1:6866] 53 34 49 48 51 49 47 46 48 47 ...
      $ :'data.frame':   6775 obs. of  4 variables:
       ..$ baby_id     : chr [1:6775] "C340001002" "C340001004" "C340001005" "C340001006" ...
       ..$ pfa0202     : int [1:6775] 5 4 5 3 5 5 5 4 5 5 ...
       ..$ relationship: int [1:6775] 3 3 3 3 3 3 2 2 3 3 ...
-      ..$ score       : num [1:6775] 63 68 63 57 73 65 58 59 61 59 ...
+      ..$ score       : num [1:6775] 51 57 52 46 62 53 47 48 51 48 ...
 
 ``` r
 glimpse(merged_data)
@@ -79,15 +85,15 @@ glimpse(merged_data)
     $ baby_id        <chr> "N111001213", "C340101165", "N232001184", "N236801005",…
     $ pfa0202        <int> 2, 4, 2, 2, 2, 5, 5, 4, 3, 2, 1, 5, 5, 5, 2, 5, 3, 5, 4…
     $ relationship.1 <int> 3, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3…
-    $ score.1        <dbl> 29, 23, 27, 25, 27, 29, 32, 25, 23, 24, 24, 21, 25, 29,…
+    $ score.1        <dbl> 23, 19, 21, 19, 21, 23, 26, 19, 17, 19, 18, 17, 20, 23,…
     $ relationship.2 <int> NA, NA, 2, 3, 2, 3, NA, NA, 2, 3, 2, 3, 3, 3, 3, 3, NA,…
-    $ score.2        <dbl> NA, NA, 30, 30, 31, 33, NA, NA, 29, 31, 33, 32, 28, 35,…
+    $ score.2        <dbl> NA, NA, 24, 24, 25, 27, NA, NA, 23, 25, 27, 26, 25, 29,…
     $ relationship.3 <int> NA, 3, 2, 3, 2, 3, NA, NA, 2, 3, 2, 3, 2, 3, NA, NA, NA…
-    $ score.3        <dbl> NA, 44, 46, 47, 58, 51, NA, NA, 58, 50, 46, 53, 49, 61,…
+    $ score.3        <dbl> NA, 35, 38, 39, 47, 40, NA, NA, 46, 41, 38, 45, 39, 49,…
     $ relationship.4 <int> NA, 3, 3, 3, 2, 3, NA, NA, 3, 3, 2, 3, NA, 3, 3, NA, NA…
-    $ score.4        <dbl> NA, 54, 58, 55, 59, 58, NA, NA, 61, 61, 53, 59, NA, 64,…
+    $ score.4        <dbl> NA, 44, 47, 45, 47, 47, NA, NA, 50, 50, 44, 49, NA, 53,…
     $ relationship.5 <int> NA, NA, 3, 3, 2, 3, NA, NA, 2, 3, 2, 3, 2, 3, 3, NA, NA…
-    $ score.5        <dbl> NA, NA, 69, 63, 61, 65, NA, NA, 65, 69, 60, 69, 69, 79,…
+    $ score.5        <dbl> NA, NA, 58, 51, 49, 53, NA, NA, 53, 57, 48, 57, 59, 67,…
 
 \#資料整理，去除無效資料
 
@@ -119,10 +125,10 @@ TRUE
 <tbody>
 <tr>
 <td style="text-align:right;">
-699
+707
 </td>
 <td style="text-align:right;">
-4078
+4127
 </td>
 </tr>
 </tbody>
@@ -179,19 +185,19 @@ N236801005
 2
 </td>
 <td style="text-align:right;">
-25
+19
 </td>
 <td style="text-align:right;">
-30
+24
 </td>
 <td style="text-align:right;">
-47
+39
 </td>
 <td style="text-align:right;">
-55
+45
 </td>
 <td style="text-align:right;">
-63
+51
 </td>
 </tr>
 <tr>
@@ -202,19 +208,19 @@ N120401113
 2
 </td>
 <td style="text-align:right;">
-27
+21
 </td>
 <td style="text-align:right;">
-31
+25
 </td>
 <td style="text-align:right;">
-58
+47
 </td>
 <td style="text-align:right;">
-59
+47
 </td>
 <td style="text-align:right;">
-61
+49
 </td>
 </tr>
 <tr>
@@ -225,19 +231,19 @@ N111001417
 5
 </td>
 <td style="text-align:right;">
-29
+23
 </td>
 <td style="text-align:right;">
-33
+27
 </td>
 <td style="text-align:right;">
-51
+40
 </td>
 <td style="text-align:right;">
-58
+47
 </td>
 <td style="text-align:right;">
-65
+53
 </td>
 </tr>
 <tr>
@@ -248,19 +254,19 @@ N122701032
 2
 </td>
 <td style="text-align:right;">
-24
+19
 </td>
 <td style="text-align:right;">
-31
+25
+</td>
+<td style="text-align:right;">
+41
 </td>
 <td style="text-align:right;">
 50
 </td>
 <td style="text-align:right;">
-61
-</td>
-<td style="text-align:right;">
-69
+57
 </td>
 </tr>
 <tr>
@@ -271,19 +277,19 @@ N233301050
 1
 </td>
 <td style="text-align:right;">
-24
+18
 </td>
 <td style="text-align:right;">
-33
+27
 </td>
 <td style="text-align:right;">
-46
+38
 </td>
 <td style="text-align:right;">
-53
+44
 </td>
 <td style="text-align:right;">
-60
+48
 </td>
 </tr>
 <tr>
@@ -294,19 +300,19 @@ N123401431
 5
 </td>
 <td style="text-align:right;">
-21
+17
 </td>
 <td style="text-align:right;">
-32
+26
 </td>
 <td style="text-align:right;">
-53
+45
 </td>
 <td style="text-align:right;">
-59
+49
 </td>
 <td style="text-align:right;">
-69
+57
 </td>
 </tr>
 </tbody>
@@ -372,16 +378,16 @@ S1001
 20
 </td>
 <td style="text-align:right;">
-32
+25
+</td>
+<td style="text-align:right;">
+48
 </td>
 <td style="text-align:right;">
 51
 </td>
 <td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-63
+53
 </td>
 </tr>
 <tr>
@@ -392,19 +398,19 @@ S1002
 大學以上
 </td>
 <td style="text-align:right;">
-22
+25
 </td>
 <td style="text-align:right;">
 29
 </td>
 <td style="text-align:right;">
-36
+37
 </td>
 <td style="text-align:right;">
-54
+50
 </td>
 <td style="text-align:right;">
-65
+59
 </td>
 </tr>
 <tr>
@@ -412,22 +418,22 @@ S1002
 S1003
 </td>
 <td style="text-align:left;">
-大學以上
+專科以下
+</td>
+<td style="text-align:right;">
+17
 </td>
 <td style="text-align:right;">
 20
 </td>
 <td style="text-align:right;">
-28
+40
 </td>
 <td style="text-align:right;">
-48
+50
 </td>
 <td style="text-align:right;">
-58
-</td>
-<td style="text-align:right;">
-72
+50
 </td>
 </tr>
 <tr>
@@ -435,22 +441,22 @@ S1003
 S1004
 </td>
 <td style="text-align:left;">
-專科以下
+大學以上
 </td>
 <td style="text-align:right;">
-26
+25
 </td>
 <td style="text-align:right;">
-29
+28
 </td>
 <td style="text-align:right;">
-53
+46
 </td>
 <td style="text-align:right;">
-62
+50
 </td>
 <td style="text-align:right;">
-68
+59
 </td>
 </tr>
 <tr>
@@ -461,19 +467,19 @@ S1005
 大學以上
 </td>
 <td style="text-align:right;">
-28
+20
 </td>
 <td style="text-align:right;">
-35
+25
 </td>
 <td style="text-align:right;">
-58
+43
 </td>
 <td style="text-align:right;">
-65
+52
 </td>
 <td style="text-align:right;">
-70
+64
 </td>
 </tr>
 <tr>
@@ -481,22 +487,22 @@ S1005
 S1006
 </td>
 <td style="text-align:left;">
-大學以上
+專科以下
 </td>
 <td style="text-align:right;">
-25
+19
 </td>
 <td style="text-align:right;">
-31
+27
 </td>
 <td style="text-align:right;">
-45
+42
 </td>
 <td style="text-align:right;">
-54
+46
 </td>
 <td style="text-align:right;">
-68
+57
 </td>
 </tr>
 </tbody>
