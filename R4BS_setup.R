@@ -22,7 +22,7 @@ if(!require("ggmirt")){
 }
 if(!require("brolgar")){
    remotes::install_github("njtierney/brolgar")
-  library(brolga)
+  library(brolgar)
 }
 
 #設定微軟 Windows 作業系統的字型
